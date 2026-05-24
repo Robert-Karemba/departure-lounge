@@ -1,0 +1,6 @@
+{
+  "name": "Departure Lounge",
+  "description": "An anonymous anthology of human memories and passages shared by strangers.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
