@@ -1,5 +1,6 @@
 import React from "react";
 import { ShieldCheck, Heart, Scroll, Compass } from "lucide-react";
+import { motion } from "motion/react";
 
 interface AboutViewProps {
   onNavigateToSubmit: () => void;
@@ -47,7 +48,7 @@ export default function AboutView({ onNavigateToSubmit, onNavigateToBrowse }: Ab
       </header>
 
       {/* Quote Container */}
-      <blockquote className="border-l-2 border-golf pl-6 py-1 italic font-serif text-lg leading-relaxed text-[#e5e1d8]">
+      <blockquote className="border-l-2 border-golf pl-6 py-1 italic font-serif text-lg leading-relaxed text-lounge-text/90">
         "I was sitting in an airport terminal, watching strangers read, sigh, and board, and it hit me—we are all constantly in a departure lounge. Always between one life and the next. Always waiting. Always leaving something loved behind."
       </blockquote>
 
@@ -64,12 +65,12 @@ export default function AboutView({ onNavigateToSubmit, onNavigateToBrowse }: Ab
         </p>
       </section>
 
-      <hr className="border-white/5" />
+      <hr className="border-border-subtle" />
 
       {/* What we believe section */}
       <section className="space-y-6">
         <div>
-          <span className="text-[10px] uppercase font-bold tracking-widest text-[#888780] block mb-2">
+          <span className="text-[10px] uppercase font-bold tracking-widest text-lounge-text-muted block mb-2">
             What we believe
           </span>
           <h3 className="font-serif text-2xl font-light text-lounge-text">
@@ -79,42 +80,47 @@ export default function AboutView({ onNavigateToSubmit, onNavigateToBrowse }: Ab
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {beliefs.map((b, idx) => (
-            <div 
+            <motion.div 
+              whileHover={{ y: -4, scale: 1.02 }}
               key={idx}
-              className="bg-[#121212] border border-white/5 p-5 rounded-xl space-y-3 hover:bg-white/5 hover:border-gold-dark/30 transition-all cursor-default"
+              className="bg-lounge-card border border-border-subtle p-5 rounded-xl space-y-3 hover:border-golf/30 hover:shadow-lg transition-all cursor-default"
             >
               <div className="flex items-center gap-3">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-black border border-white/10 text-golf shadow-xs">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-lounge-bg border border-border-subtle text-golf shadow-xs">
                   {b.icon}
                 </div>
-                <h4 className="font-serif text-sm font-semibold text-[#e5e1d8]">
+                <h4 className="font-serif text-sm font-semibold text-lounge-text">
                   {b.title}
                 </h4>
               </div>
               <p className="font-sans text-xs text-lounge-text-muted leading-relaxed">
                 {b.description}
               </p>
-            </div>
+            </motion.div>
           ))}
         </div>
       </section>
 
-      <hr className="border-white/5" />
+      <hr className="border-border-subtle" />
 
       {/* Action triggers */}
       <div className="flex items-center justify-center gap-4 pt-4">
-        <button
+        <motion.button
+          whileHover={{ scale: 1.04, y: -2 }}
+          whileTap={{ scale: 0.97 }}
           onClick={onNavigateToSubmit}
-          className="px-6 py-2.5 text-xs font-bold uppercase tracking-widest text-black bg-gold rounded-lg hover:bg-golf-dark transition-colors cursor-pointer"
+          className="px-6 py-3 text-xs font-bold uppercase tracking-widest text-lounge-bg bg-golf rounded-lg hover:bg-golf-dark transition-all cursor-pointer shadow-md"
         >
           Leave your story here
-        </button>
-        <button
+        </motion.button>
+        <motion.button
+          whileHover={{ scale: 1.04, y: -2 }}
+          whileTap={{ scale: 0.97 }}
           onClick={onNavigateToBrowse}
-          className="px-6 py-2.5 text-xs font-bold uppercase tracking-widest text-[#c5a059] bg-transparent border border-golf/30 rounded-lg hover:bg-white/5 transition-colors cursor-pointer"
+          className="px-6 py-3 text-xs font-bold uppercase tracking-widest text-golf bg-transparent border border-golf/30 rounded-lg hover:bg-lounge-sidebar transition-all cursor-pointer"
         >
           Read others
-        </button>
+        </motion.button>
       </div>
 
     </div>

@@ -167,40 +167,53 @@ export default function App() {
           </div>
 
           {/* Desktop Navigation Link Tabs */}
-          <div className="hidden md:flex items-center gap-1 bg-lounge-card border border-border-subtle p-1.5 rounded-xl">
-            {(["browse", "submit", "book", "about"] as const).map((tab) => (
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                key={tab}
-                onClick={() => handleTabChange(tab)}
-                className={`px-4 py-1.5 rounded-lg text-xs font-semibold tracking-tight transition-all relative cursor-pointer ${
-                  activeTab === tab
-                    ? "text-lounge-bg bg-golf shadow-sm font-bold"
-                    : "text-lounge-text-muted hover:text-lounge-text hover:bg-lounge-bg/50"
-                }`}
-              >
-                {tab === "browse" && "Browse"}
-                {tab === "submit" && "Submit a story"}
-                {tab === "book" && "The Book"}
-                {tab === "about" && "Our story"}
-              </motion.button>
-            ))}
+          <div className="hidden md:flex items-center gap-1 bg-lounge-card border border-border-subtle p-1.5 rounded-xl relative select-none">
+            {(["browse", "submit", "book", "about"] as const).map((tab) => {
+              const isActive = activeTab === tab;
+              return (
+                <button
+                  key={tab}
+                  onClick={() => handleTabChange(tab)}
+                  className={`px-4 py-1.5 rounded-lg text-xs font-semibold tracking-tight relative cursor-pointer z-10 transition-colors duration-300 outline-hidden ${
+                    isActive
+                      ? "text-lounge-bg font-bold"
+                      : "text-lounge-text-muted hover:text-lounge-text"
+                  }`}
+                >
+                  {isActive && (
+                    <motion.div
+                      layoutId="activeTabIndicator"
+                      className="absolute inset-0 bg-golf rounded-lg -z-10 shadow-xs"
+                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                    />
+                  )}
+                  {tab === "browse" && "Browse"}
+                  {tab === "submit" && "Submit a story"}
+                  {tab === "book" && "The Book"}
+                  {tab === "about" && "Our story"}
+                </button>
+              );
+            })}
 
             {/* Admin Curation tab reveals exclusively when user is validated as admin */}
             {user && user.role === "admin" && (
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+              <button
                 onClick={() => handleTabChange("admin")}
-                className={`px-4 py-1.5 rounded-lg text-xs font-semibold tracking-tight transition-all flex items-center gap-1 cursor-pointer ${
+                className={`px-4 py-1.5 rounded-lg text-xs font-semibold tracking-tight relative flex items-center gap-1 cursor-pointer z-10 transition-colors duration-300 outline-hidden ${
                   activeTab === "admin"
-                    ? "text-[#050505] bg-golf shadow-sm font-bold"
-                    : "text-lounge-text-muted hover:text-golf hover:bg-lounge-bg/50"
+                    ? "text-lounge-bg font-bold"
+                    : "text-lounge-text-muted hover:text-golf"
                 }`}
               >
-                <Sparkles className="h-3 w-3 text-gold-dark animate-pulse" /> Admin Workspace
-              </motion.button>
+                {activeTab === "admin" && (
+                  <motion.div
+                    layoutId="activeTabIndicator"
+                    className="absolute inset-0 bg-golf rounded-lg -z-10 shadow-xs"
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  />
+                )}
+                <Sparkles className={`h-3 w-3 ${activeTab === "admin" ? "text-lounge-bg" : "text-golf"} animate-pulse`} /> Admin Workspace
+              </button>
             )}
           </div>
 

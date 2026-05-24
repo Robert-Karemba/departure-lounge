@@ -126,12 +126,24 @@ export default function BrowseView({
           </div>
         ) : (
           <motion.div 
-            layout
+            variants={{
+              hidden: { opacity: 0 },
+              show: {
+                opacity: 1,
+                transition: { staggerChildren: 0.04 }
+              }
+            }}
+            initial="hidden"
+            animate="show"
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
           >
             {stories.map((story) => (
               <motion.article
-                whileHover={{ y: -6, scale: 1.01 }}
+                variants={{
+                  hidden: { opacity: 0, y: 15 },
+                  show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 220, damping: 22 } }
+                }}
+                whileHover={{ y: -6, scale: 1.012, transition: { duration: 0.2, ease: "easeOut" } }}
                 layout
                 key={story.id}
                 onClick={() => setReadingStory(story)}

@@ -54,7 +54,7 @@ export default function BookView({ chapters, loading, onNavigateToSubmit }: Book
           <motion.div 
             whileHover={{ y: -8, rotateY: -3 }}
             transition={{ duration: 0.4, ease: [0.25, 1, 0.5, 1] }}
-            className="w-[280px] md:w-[320px] aspect-[3/4] bg-[#141412] rounded-r-xl rounded-l-md p-8 text-center flex flex-col justify-between shadow-2xl relative border-l border-golf/20 overflow-hidden animate-slide-up"
+            className="w-[280px] md:w-[320px] aspect-[3/4] bg-[#141412] rounded-r-xl rounded-l-md pt-8 pb-8 pl-[38px] pr-7 text-center flex flex-col justify-between shadow-2xl relative border-l border-golf/20 overflow-hidden animate-slide-up"
             style={{ perspective: "1000px" }}
           >
             {/* Subtle spine lining shadow */}
@@ -62,32 +62,32 @@ export default function BookView({ chapters, loading, onNavigateToSubmit }: Book
             <div className="absolute top-0 bottom-0 left-2.5 w-[1px] bg-golf/15" />
 
             {/* Gold foil-like elements */}
-            <div className="border border-golf/25 p-6 h-full flex flex-col justify-between rounded-r-lg">
+            <div className="border border-golf/25 p-5 md:p-6 h-full flex flex-col justify-between rounded-r-lg">
               <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-lg bg-black/60 border border-golf/20">
                 <svg viewBox="0 0 28 28" className="h-8 w-8 text-gold-dark" fill="none">
-                  <text x="2" y="20" fontFamily="Georgia, serif" fontSize="18" fontWeight="500" fill="#c5a059">D</text>
+                  <text x="3" y="20" fontFamily="Georgia, serif" fontSize="18" fontWeight="500" fill="#c5a059">D</text>
                   <text x="14" y="20" fontFamily="Georgia, serif" fontSize="18" fontWeight="400" fill="#8a6e3c">L</text>
                 </svg>
               </div>
 
-              <div className="space-y-2">
-                <span className="font-serif text-[10px] tracking-widest text-[#888780] font-bold uppercase block">
+              <div className="space-y-2 text-center flex flex-col items-center">
+                <span className="font-serif text-[10px] tracking-widest text-[#888780] font-bold uppercase block text-center w-full">
                   anthology series
                 </span>
-                <h2 className="font-serif text-3xl font-light tracking-widest text-golf leading-tight uppercase">
+                <h2 className="font-serif text-3xl font-light tracking-widest text-gold-dark leading-tight uppercase text-center w-full">
                   Departure<br />Lounge
                 </h2>
                 <div className="h-[1.5px] w-12 bg-golf/20 mx-auto my-3" />
-                <p className="font-serif text-xs italic text-[#888780] font-light max-w-[180px] mx-auto leading-relaxed">
+                <p className="font-serif text-xs italic text-[#888780] font-light max-w-[180px] mx-auto leading-relaxed text-center w-full">
                   an anonymous archive of passing moments and ordinary lives
                 </p>
               </div>
 
-              <div className="space-y-1">
-                <div className="font-mono text-[9px] uppercase tracking-widest text-golf/80">
+              <div className="space-y-1 text-center flex flex-col items-center">
+                <div className="font-mono text-[9px] uppercase tracking-widest text-golf/80 text-center w-full">
                   Volume I &nbsp;|&nbsp; 2026
                 </div>
-                <div className="text-[8px] text-[#888780]/80">
+                <div className="text-[8px] text-[#888780]/80 text-center w-full">
                   CURATED BY AI
                 </div>
               </div>
