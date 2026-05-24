@@ -102,7 +102,7 @@ export default function SubmitView({ user, token, onOpenAuth, onSubmissionSucces
   if (!user) {
     return (
       <div className="mx-auto max-w-sm text-center py-24 px-4 animate-fade-in">
-        <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-white/5 border border-white/10 text-golf">
+        <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-lounge-card border border-border-subtle text-golf">
           <BookOpen className="h-6 w-6" />
         </div>
         <h2 className="font-serif text-2xl font-semibold italic text-lounge-text tracking-tight mb-2">
@@ -111,12 +111,14 @@ export default function SubmitView({ user, token, onOpenAuth, onSubmissionSucces
         <p className="font-sans text-lounge-text-muted text-xs md:text-sm leading-relaxed mb-8">
           The lounge anthology is entirely anonymous, but user registration is required for safety reviews and submission records.
         </p>
-        <button
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           onClick={onOpenAuth}
-          className="w-full py-2.5 rounded-lg bg-golf font-semibold text-black text-xs uppercase tracking-wider hover:bg-golf-dark transition-all cursor-pointer"
+          className="w-full py-2.5 rounded-lg bg-golf font-semibold text-lounge-bg text-xs uppercase tracking-wider hover:bg-golf-dark transition-all cursor-pointer"
         >
           Sign In or Create Account
-        </button>
+        </motion.button>
       </div>
     );
   }
@@ -152,10 +154,10 @@ export default function SubmitView({ user, token, onOpenAuth, onSubmissionSucces
             key="successView"
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            className="space-y-8 py-4"
+            className="space-y-8 py-4 w-full"
           >
             <div className="text-center space-y-3">
-              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-golf/10 text-golf border border-golf/25">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-golf/15 text-golf border border-golf/25">
                 <CheckCircle2 className="h-7 w-7" />
               </div>
               <h2 className="font-serif text-3xl font-light italic text-lounge-text leading-snug">
@@ -167,8 +169,8 @@ export default function SubmitView({ user, token, onOpenAuth, onSubmissionSucces
             </div>
 
             {/* Curated AI Review Details Card */}
-            <div className="bg-white/5 border border-white/5 rounded-xl p-6 md:p-8 space-y-6">
-              <div className="flex items-center gap-1.5 pb-3 border-b border-white/5">
+            <div className="bg-lounge-card border border-border-subtle rounded-xl p-6 md:p-8 space-y-6 shadow-md">
+              <div className="flex items-center gap-1.5 pb-3 border-b border-border-subtle">
                 <Sparkles className="h-4 w-4 text-golf animate-pulse" />
                 <span className="font-mono text-[11px] uppercase tracking-wider font-bold text-lounge-text">
                   AI Editorial curation report
@@ -192,7 +194,7 @@ export default function SubmitView({ user, token, onOpenAuth, onSubmissionSucces
 
               <div>
                 <span className="text-[10px] uppercase font-bold text-lounge-text-muted tracking-wider block mb-1">Poetic Excerpt Extracted</span>
-                <p className="font-sans text-lounge-text-muted text-xs md:text-sm italic leading-relaxed bg-[#0c0c0c] border border-white/5 p-4 rounded-lg">
+                <p className="font-sans text-lounge-text-muted text-xs md:text-sm italic leading-relaxed bg-lounge-bg border border-border-subtle p-4 rounded-lg">
                   "{subResult.story.excerpt}"
                 </p>
               </div>
@@ -200,16 +202,16 @@ export default function SubmitView({ user, token, onOpenAuth, onSubmissionSucces
               <div>
                 <span className="text-[10px] uppercase font-bold text-lounge-text-muted tracking-wider block mb-1">Curator Verdict</span>
                 {subResult.aiSelected ? (
-                  <div className="rounded-lg bg-golf/10 border border-golf/25 p-4 text-[#e5e1d8]">
+                  <div className="rounded-lg bg-golf/10 border border-golf/25 p-4 text-lounge-text">
                     <p className="text-sm font-semibold flex items-center gap-1.5 mb-1 text-golf">
                       <Sparkles className="h-4 w-4 text-golf fill-golf/10" /> Compiled into Volume I!
                     </p>
-                    <p className="text-[11px] leading-relaxed text-[#e5e1d8]/85">
+                    <p className="text-[11px] leading-relaxed text-lounge-text/85">
                       Your memory possesses extraordinary emotional texture and perspective. It has been compiled as an active Chapter in "The Book" (Volume I) complete with dynamic page numbers.
                     </p>
                   </div>
                 ) : (
-                  <div className="rounded-lg bg-white/5 border border-white/5 p-4 text-lounge-text-muted">
+                  <div className="rounded-lg bg-lounge-bg border border-border-subtle p-4 text-lounge-text-muted">
                     <p className="text-sm font-semibold mb-1 text-lounge-text">
                       Saved in the Public Lounge
                     </p>
@@ -229,12 +231,14 @@ export default function SubmitView({ user, token, onOpenAuth, onSubmissionSucces
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3 pt-2">
-              <button
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
                 onClick={handleResetForm}
-                className="w-full py-3 bg-golf border border-golf text-[#050505] hover:bg-golf-dark hover:shadow-lg active:translate-y-[1px] transition-all rounded-lg text-xs font-bold uppercase tracking-wider cursor-pointer"
+                className="w-full py-3 bg-golf border border-golf text-lounge-bg hover:bg-golf-dark hover:shadow-lg active:translate-y-[1px] transition-all rounded-lg text-xs font-bold uppercase tracking-wider cursor-pointer font-sans"
               >
                 Submit another story
-              </button>
+              </motion.button>
             </div>
           </motion.div>
         ) : (
@@ -250,7 +254,7 @@ export default function SubmitView({ user, token, onOpenAuth, onSubmissionSucces
             </header>
 
             {/* PII Isolation Caution Warning Box */}
-            <div className="flex gap-4.5 bg-[#121212] border-l-2 border-golf rounded-r-xl p-5">
+            <div className="flex gap-4.5 bg-lounge-card border border-border-subtle border-l-2 border-l-golf rounded-r-xl p-5 shadow-sm">
               <div className="flex-1">
                 <span className="font-sans font-semibold text-xs uppercase tracking-wide text-golf block mb-1">
                   Absolute Anonymity Guarantee
@@ -262,7 +266,7 @@ export default function SubmitView({ user, token, onOpenAuth, onSubmissionSucces
             </div>
 
             {error && (
-              <div className="rounded-lg bg-red-950/40 border border-red-900/40 p-4 text-red-300 text-xs flex items-center gap-2">
+              <div className="rounded-lg bg-red-950/20 border border-red-900/30 p-4 text-red-400 text-xs flex items-center gap-2">
                 <AlertCircle className="h-4 w-4" />
                 <span>{error}</span>
               </div>
@@ -279,7 +283,7 @@ export default function SubmitView({ user, token, onOpenAuth, onSubmissionSucces
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Give your memory a title (e.g. Platform 4, Rain)"
                 required
-                className="w-full rounded-lg border border-white/10 bg-[#0c0c0c] py-3 px-4 text-lounge-text placeholder-white/20 text-[15px] focus:border-golf focus:outline-hidden transition-colors font-serif font-semibold"
+                className="w-full rounded-lg border border-border-subtle bg-lounge-bg py-3 px-4 text-lounge-text placeholder-lounge-text-muted/40 text-[15px] focus:border-golf focus:outline-hidden transition-colors font-serif font-semibold"
               />
             </div>
 
@@ -292,15 +296,15 @@ export default function SubmitView({ user, token, onOpenAuth, onSubmissionSucces
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
                 required
-                className="w-full rounded-lg border border-white/10 bg-[#0c0c0c] py-3 px-4 text-lounge-text focus:border-golf focus:outline-hidden transition-colors cursor-pointer font-sans"
+                className="w-full rounded-lg border border-border-subtle bg-lounge-bg py-3 px-4 text-lounge-text focus:border-golf focus:outline-hidden transition-colors cursor-pointer font-sans"
               >
-                <option value="" className="bg-[#0c0c0c]">Select the primary anchor of this story...</option>
-                <option value="loss" className="bg-[#0c0c0c]">Loss (Departure, grief, remnants)</option>
-                <option value="love" className="bg-[#0c0c0c]">Love (Fleeting intersections, bounds, adoration)</option>
-                <option value="adventure" className="bg-[#0c0c0c]">Adventure (Solitary treks, mountain valleys, risk)</option>
-                <option value="family" className="bg-[#0c0c0c]">Family (Sunday rituals, kitchens, heritage)</option>
-                <option value="work" className="bg-[#0c0c0c]">Work (Quit lines, desk optimization, craft choices)</option>
-                <option value="other" className="bg-[#0c0c0c]">Other (Midnight diners, stars, passing time)</option>
+                <option value="" className="bg-lounge-bg text-lounge-text">Select the primary anchor of this story...</option>
+                <option value="loss" className="bg-lounge-bg text-lounge-text">Loss (Departure, grief, remnants)</option>
+                <option value="love" className="bg-lounge-bg text-lounge-text">Love (Fleeting intersections, bounds, adoration)</option>
+                <option value="adventure" className="bg-lounge-bg text-lounge-text">Adventure (Solitary treks, mountain valleys, risk)</option>
+                <option value="family" className="bg-lounge-bg text-lounge-text">Family (Sunday rituals, kitchens, heritage)</option>
+                <option value="work" className="bg-lounge-bg text-lounge-text">Work (Quit lines, desk optimization, craft choices)</option>
+                <option value="other" className="bg-lounge-bg text-lounge-text">Other (Midnight diners, stars, passing time)</option>
               </select>
             </div>
 
@@ -314,19 +318,21 @@ export default function SubmitView({ user, token, onOpenAuth, onSubmissionSucces
                 onChange={(e) => setBody(e.target.value)}
                 placeholder="Start wherever feels right. Knead your memories as they were. Do not think of editing, just write what was true..."
                 required
-                className="w-full min-h-[250px] rounded-lg border border-white/10 bg-[#0c0c0c] py-3 px-4 text-lounge-text placeholder-white/20 text-[16px] leading-relaxed focus:border-golf focus:outline-hidden transition-colors font-serif resize-y"
+                className="w-full min-h-[250px] rounded-lg border border-border-subtle bg-lounge-bg py-3 px-4 text-lounge-text placeholder-lounge-text-muted/40 text-[16px] leading-relaxed focus:border-golf focus:outline-hidden transition-colors font-serif resize-y"
               />
               <div className={`text-right text-[11.5px] mt-1 ${body.length > characterLimit ? "text-red-500" : "text-lounge-text-muted"} font-mono`}>
                 {body.length} / {characterLimit} characters
               </div>
             </div>
 
-            <button
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
               type="submit"
-              className="flex w-full items-center justify-center gap-2 rounded-lg bg-golf py-3.5 text-xs font-bold uppercase tracking-widest text-[#050505] shadow-md hover:bg-golf-dark active:translate-y-[1px] transition-all cursor-pointer font-sans"
+              className="flex w-full items-center justify-center gap-2 rounded-lg bg-golf py-3.5 text-xs font-bold uppercase tracking-widest text-lounge-bg shadow-md hover:bg-golf-dark active:translate-y-[1px] transition-all cursor-pointer font-sans"
             >
-              <Sparkles className="h-4 w-4 text-[#050505]" /> Submit entry for curation
-            </button>
+              <Sparkles className="h-4 w-4" /> Submit entry for curation
+            </motion.button>
           </motion.form>
         )}
       </AnimatePresence>

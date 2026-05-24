@@ -34,12 +34,12 @@ export default function BrowseView({
 
   const getTagClass = (category: string) => {
     switch (category) {
-      case "loss": return "bg-amber-950/40 text-[#c5a059] border-amber-900/40";
-      case "love": return "bg-rose-950/40 text-rose-300 border-rose-900/40";
-      case "adventure": return "bg-emerald-950/40 text-emerald-300 border-emerald-900/40";
-      case "family": return "bg-blue-950/40 text-blue-300 border-blue-900/40";
-      case "work": return "bg-indigo-950/40 text-indigo-300 border-indigo-900/40";
-      default: return "bg-white/5 text-lounge-text-muted border-white/10";
+      case "loss": return "bg-amber-950/20 text-[#c5a059] border-amber-900/30";
+      case "love": return "bg-rose-950/20 text-rose-400 border-rose-900/30";
+      case "adventure": return "bg-emerald-950/20 text-emerald-400 border-emerald-900/30";
+      case "family": return "bg-blue-950/20 text-blue-400 border-blue-900/30";
+      case "work": return "bg-indigo-950/20 text-indigo-400 border-indigo-900/30";
+      default: return "bg-lounge-bg text-lounge-text-muted border-border-medium";
     }
   };
 
@@ -58,40 +58,46 @@ export default function BrowseView({
           Here, strangers leave behind their most poignant memories—curated by AI into a shared book of human passage.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <button
+          <motion.button
+            whileHover={{ scale: 1.04, y: -2 }}
+            whileTap={{ scale: 0.97 }}
             onClick={onNavigateToSubmit}
-            className="w-full sm:w-auto px-6 py-3 text-xs font-semibold uppercase tracking-widest text-black bg-gold rounded-lg hover:bg-golf-dark active:translate-y-[1px] transition-all cursor-pointer"
+            className="w-full sm:w-auto px-6 py-3 text-xs font-bold uppercase tracking-widest text-[#0a0a0a] bg-golf rounded-lg shadow-md hover:bg-golf-dark active:translate-y-[1px] transition-all cursor-pointer"
           >
             Leave your story
-          </button>
-          <button
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.04, y: -2 }}
+            whileTap={{ scale: 0.97 }}
             onClick={onNavigateToBook}
-            className="w-full sm:w-auto px-6 py-3 text-xs font-semibold uppercase tracking-widest text-golf bg-transparent border border-golf/30 rounded-lg hover:bg-white/5 active:translate-y-[1px] transition-all cursor-pointer flex items-center justify-center gap-1.5"
+            className="w-full sm:w-auto px-6 py-3 text-xs font-bold uppercase tracking-widest text-golf bg-transparent border border-golf/40 rounded-lg hover:bg-lounge-sidebar md:px-7 active:translate-y-[1px] transition-all cursor-pointer flex items-center justify-center gap-1.5"
           >
             Read the Anthology <ArrowRight className="h-4 w-4" />
-          </button>
+          </motion.button>
         </div>
       </section>
 
       {/* Filter Category pills */}
-      <section className="border-t border-white/5 pt-10 pb-4">
+      <section className="border-t border-border-subtle pt-10 pb-4">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <h2 className="font-serif text-2xl font-normal text-lounge-text tracking-tight">
             Leaves of Memory
           </h2>
           <div className="flex items-center gap-1.5 overflow-x-auto pb-2 sm:pb-0 scrollbar-none">
             {categories.map((cat) => (
-              <button
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 key={cat.value}
                 onClick={() => onCategoryChange(cat.value)}
                 className={`px-4 py-1.5 text-xs rounded-full border cursor-pointer font-medium whitespace-nowrap transition-all duration-300 ${
                   selectedCategory === cat.value
-                    ? "bg-golf text-black border-golf shadow-sm font-semibold"
-                    : "bg-[#121212] border-white/5 text-lounge-text-muted hover:border-white/15 hover:text-lounge-text"
+                    ? "bg-golf text-lounge-bg border-golf shadow-sm font-semibold"
+                    : "bg-lounge-card border-border-subtle text-lounge-text-muted hover:border-border-medium hover:text-lounge-text"
                 }`}
               >
                 {cat.label}
-              </button>
+              </motion.button>
             ))}
           </div>
         </div>
@@ -99,22 +105,24 @@ export default function BrowseView({
         {/* Stories Listing */}
         {loading ? (
           <div className="py-24 text-center">
-            <div className="inline-block h-6 w-6 animate-spin rounded-full border-2 border-white/10 border-t-golf" />
+            <div className="inline-block h-6 w-6 animate-spin rounded-full border-2 border-border-subtle border-t-golf" />
             <p className="text-xs text-lounge-text-muted mt-3 font-medium">Gathering memories from the departure lounge...</p>
           </div>
         ) : stories.length === 0 ? (
-          <div className="py-24 text-center border border-dashed border-white/10 rounded-2xl bg-white/2">
+          <div className="py-24 text-center border border-dashed border-border-medium rounded-2xl bg-lounge-card/40">
             <BookOpen className="h-8 w-8 text-lounge-text-muted mx-auto mb-3" />
-            <p className="font-serif text-lg italic text-lounge-text/80">The bench is currently quiet.</p>
+            <p className="font-serif text-base italic text-lounge-text/80">The bench is currently quiet.</p>
             <p className="text-xs text-lounge-text-muted max-w-sm mx-auto mt-1 leading-relaxed">
               No entries have been published under this category yet. Be the first to leave a shadow of your passage.
             </p>
-            <button
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={onNavigateToSubmit}
-              className="mt-6 px-4 py-2 text-xs font-semibold text-black bg-gold rounded-md hover:bg-golf-dark transition-colors"
+              className="mt-6 px-4 py-2 text-xs font-semibold text-lounge-bg bg-golf rounded-md hover:bg-golf-dark transition-all cursor-pointer"
             >
               Write your story
-            </button>
+            </motion.button>
           </div>
         ) : (
           <motion.div 
@@ -123,10 +131,11 @@ export default function BrowseView({
           >
             {stories.map((story) => (
               <motion.article
+                whileHover={{ y: -6, scale: 1.01 }}
                 layout
                 key={story.id}
                 onClick={() => setReadingStory(story)}
-                className="group relative flex flex-col justify-between bg-white/5 border border-white/10 rounded-lg p-6 hover:border-golf/45 hover:-translate-y-1 transition-all duration-300 cursor-pointer overflow-hidden shadow-2xl"
+                className="group relative flex flex-col justify-between bg-lounge-card border border-border-subtle rounded-lg p-6 hover:border-golf/45 transition-all duration-300 cursor-pointer overflow-hidden shadow-md"
               >
                 <div>
                   <div className="flex items-center justify-between gap-4 mb-4">
@@ -138,7 +147,7 @@ export default function BrowseView({
                         <Sparkles className="h-2.5 w-2.5" /> Book Selected
                       </span>
                     ) : (
-                      <span className="inline-flex items-center gap-1 rounded-full bg-white/5 px-2 py-0.5 text-[10px] font-medium text-lounge-text-muted">
+                      <span className="inline-flex items-center gap-1 rounded-full bg-lounge-sidebar px-2 py-0.5 text-[10px] font-medium text-lounge-text-muted border border-border-subtle">
                         Anthology Entry
                       </span>
                     )}
@@ -150,7 +159,7 @@ export default function BrowseView({
                     {story.excerpt}
                   </p>
                 </div>
-                <div className="flex items-center justify-between border-t border-white/5 pt-4 mt-2">
+                <div className="flex items-center justify-between border-t border-border-subtle pt-4 mt-2">
                   <span className="text-[11px] text-lounge-text-muted">
                     Anonymous · @{story.authorUsername}
                   </span>
@@ -173,10 +182,10 @@ export default function BrowseView({
               animate={{ scale: 1, y: 0, opacity: 1 }}
               exit={{ scale: 0.95, y: 15, opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="relative w-full max-w-2xl max-h-[85vh] flex flex-col bg-[#0c0c0c] rounded-xl shadow-2xl border border-white/10 overflow-hidden"
+              className="relative w-full max-w-2xl max-h-[85vh] flex flex-col bg-lounge-bg rounded-xl shadow-2xl border border-border-medium overflow-hidden"
             >
               {/* Top Bar Banner with Exit Button */}
-              <div className="flex items-center justify-between border-b border-white/5 bg-[#050505] p-5">
+              <div className="flex items-center justify-between border-b border-border-subtle bg-lounge-sidebar p-5">
                 <div className="flex items-center gap-2">
                   <span className={`px-2.5 py-0.5 text-[10px] uppercase font-bold tracking-wider rounded-full border ${getTagClass(readingStory.category)}`}>
                     {readingStory.category}
@@ -187,18 +196,20 @@ export default function BrowseView({
                     </span>
                   )}
                 </div>
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.1, rotate: 90 }}
+                  whileTap={{ scale: 0.9 }}
                   onClick={() => setReadingStory(null)}
-                  className="flex h-8 w-8 items-center justify-center rounded-full text-lounge-text-muted hover:bg-white/5 hover:text-lounge-text transition-colors cursor-pointer animate-fade-in"
+                  className="flex h-8 w-8 items-center justify-center rounded-full text-lounge-text-muted hover:bg-lounge-card hover:text-lounge-text transition-all cursor-pointer"
                 >
                   <XIcon />
-                </button>
+                </motion.button>
               </div>
 
               {/* Scrollable letter area */}
-              <div className="flex-1 overflow-y-auto p-8 md:p-10 scroll-smooth">
+              <div className="flex-1 overflow-y-auto p-8 md:p-10 scroll-smooth bg-lounge-card/30">
                 <div className="max-w-xl mx-auto space-y-6">
-                  <header className="border-b border-white/5 pb-6 text-center">
+                  <header className="border-b border-border-subtle pb-6 text-center">
                     <span className="font-script text-3xl text-golf block mb-1">
                       leaf from the lounge
                     </span>
@@ -211,7 +222,7 @@ export default function BrowseView({
                     {readingStory.body}
                   </p>
 
-                  <footer className="border-t border-white/5 pt-6 flex justify-between text-xs text-lounge-text-muted font-sans">
+                  <footer className="border-t border-border-subtle pt-6 flex justify-between text-xs text-lounge-text-muted font-sans">
                     <div>
                       <span>Written Anonymously</span>
                       <p className="text-[11px] text-lounge-text-muted/60 font-mono mt-0.5">Author ID: {readingStory.id}</p>
@@ -225,7 +236,7 @@ export default function BrowseView({
               </div>
 
               {/* Bottom bar advice */}
-              <div className="border-t border-white/5 bg-[#05055] p-4 text-center">
+              <div className="border-t border-border-subtle bg-lounge-sidebar p-4 text-center">
                 <p className="text-[11px] text-lounge-text-muted italic">
                   "Every memory left behind belongs to the people who find it." — Departure Lounge
                 </p>

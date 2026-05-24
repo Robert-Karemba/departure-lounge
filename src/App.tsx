@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BookOpen, Sparkles, LogOut, ChevronRight, Menu, X, ArrowUpRight } from "lucide-react";
+import { BookOpen, Sparkles, LogOut, ChevronRight, Menu, X, ArrowUpRight, Sun, Moon } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { User, Story, Chapter, Category } from "./types";
 import AuthModal from "./components/AuthModal";
@@ -20,6 +20,21 @@ export default function App() {
   const [selectedCategory, setSelectedCategory] = useState<Category | "all">("all");
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const [theme, setTheme] = useState<"light" | "dark">(() => {
+    const saved = localStorage.getItem("theme");
+    return saved === "light" ? "light" : "dark";
+  });
+
+  useEffect(() => {
+    const root = window.document.documentElement;
+    if (theme === "light") {
+      root.classList.add("light");
+    } else {
+      root.classList.remove("light");
+    }
+    localStorage.setItem("theme", theme);
+  }, [theme]);
 
   // Authentication check on startup
   useEffect(() => {
@@ -127,7 +142,7 @@ export default function App() {
       />
 
       {/* NAVIGATION HEADER BAR */}
-      <nav className="sticky top-0 z-40 w-full bg-[#050505]/85 backdrop-blur-md border-b border-white/5 select-none">
+      <nav className="sticky top-0 z-40 w-full bg-lounge-sidebar/85 backdrop-blur-md border-b border-border-subtle select-none">
         <div className="mx-auto max-w-7xl px-6 h-16 flex items-center justify-between">
           
           {/* Logo brand click navigates home */}
@@ -135,14 +150,14 @@ export default function App() {
             onClick={() => handleTabChange("browse")}
             className="flex items-center gap-3 cursor-pointer group"
           >
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-golf text-black shadow-md shadow-golf-dark/5 group-hover:scale-105 group-hover:rotate-1 transition-all duration-300">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-golf text-lounge-bg shadow-md shadow-golf-dark/5 group-hover:scale-105 group-hover:rotate-1 transition-all duration-300">
               <svg viewBox="0 0 22 22" className="h-5 w-5" fill="none">
-                <text x="2" y="16" fontFamily="Georgia, serif" fontSize="14" fontWeight="600" fill="#050505">D</text>
-                <text x="11" y="16" fontFamily="Georgia, serif" fontSize="14" fontWeight="400" fill="#8a6e3c">L</text>
+                <text x="2" y="16" fontFamily="Georgia, serif" fontSize="14" fontWeight="600" fill="currentColor">D</text>
+                <text x="11" y="16" fontFamily="Georgia, serif" fontSize="14" fontWeight="400" fill="var(--golf-dark)">L</text>
               </svg>
             </div>
             <div>
-              <h1 className="font-serif text-lg font-bold italic text-[#e5e1d8] tracking-tight leading-none group-hover:text-golf transition-colors">
+              <h1 className="font-serif text-lg font-bold italic text-lounge-text tracking-tight leading-none group-hover:text-golf transition-colors">
                 Departure Lounge
               </h1>
               <span className="text-[10px] text-lounge-text-muted font-medium tracking-widest mt-1 block uppercase">
@@ -152,70 +167,99 @@ export default function App() {
           </div>
 
           {/* Desktop Navigation Link Tabs */}
-          <div className="hidden md:flex items-center gap-1 bg-white/5 border border-white/5 p-1.5 rounded-xl">
+          <div className="hidden md:flex items-center gap-1 bg-lounge-card border border-border-subtle p-1.5 rounded-xl">
             {(["browse", "submit", "book", "about"] as const).map((tab) => (
-              <button
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 key={tab}
                 onClick={() => handleTabChange(tab)}
                 className={`px-4 py-1.5 rounded-lg text-xs font-semibold tracking-tight transition-all relative cursor-pointer ${
                   activeTab === tab
-                    ? "text-[#050505] bg-golf shadow-sm font-bold"
-                    : "text-lounge-text-muted hover:text-lounge-text hover:bg-white/5"
+                    ? "text-lounge-bg bg-golf shadow-sm font-bold"
+                    : "text-lounge-text-muted hover:text-lounge-text hover:bg-lounge-bg/50"
                 }`}
               >
                 {tab === "browse" && "Browse"}
                 {tab === "submit" && "Submit a story"}
                 {tab === "book" && "The Book"}
                 {tab === "about" && "Our story"}
-              </button>
+              </motion.button>
             ))}
 
             {/* Admin Curation tab reveals exclusively when user is validated as admin */}
             {user && user.role === "admin" && (
-              <button
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => handleTabChange("admin")}
                 className={`px-4 py-1.5 rounded-lg text-xs font-semibold tracking-tight transition-all flex items-center gap-1 cursor-pointer ${
                   activeTab === "admin"
                     ? "text-[#050505] bg-golf shadow-sm font-bold"
-                    : "text-lounge-text-muted hover:text-golf hover:bg-white/5"
+                    : "text-lounge-text-muted hover:text-golf hover:bg-lounge-bg/50"
                 }`}
               >
                 <Sparkles className="h-3 w-3 text-gold-dark animate-pulse" /> Admin Workspace
-              </button>
+              </motion.button>
             )}
           </div>
 
-          {/* User authenticate details controls */}
+          {/* Theme selection and User authenticate details controls */}
           <div className="hidden md:flex items-center gap-4">
+            {/* Elegant Springy Theme Toggle Selector */}
+            <motion.button
+              whileHover={{ scale: 1.1, rotate: 12 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+              className="p-1.5 rounded-lg bg-lounge-card border border-border-subtle text-golf hover:text-golf-dark transition-colors cursor-pointer flex items-center justify-center"
+              title={theme === "light" ? "Switch to Midnight Dark" : "Switch to Antique Light"}
+            >
+              {theme === "light" ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4 animate-pulse" />}
+            </motion.button>
+
             {user ? (
-              <div className="flex items-center gap-4">
-                <span className="text-xs text-lounge-text/80 font-medium bg-[#121212] border border-white/5 px-3 py-1.5 rounded-xl">
+              <div className="flex items-center gap-3">
+                <span className="text-xs text-lounge-text/85 font-medium bg-lounge-card border border-border-subtle px-3 py-1.5 rounded-xl">
                   @<strong>{user.username}</strong>
                 </span>
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                   onClick={handleLogout}
-                  className="flex items-center justify-center gap-1 px-3 py-1.5 text-xs font-semibold border border-white/10 rounded-lg text-lounge-text-muted hover:bg-white/5 hover:text-lounge-text active:translate-y-[1px] transition-all cursor-pointer"
+                  className="flex items-center justify-center gap-1 px-3 py-1.5 text-xs font-semibold border border-border-medium rounded-lg text-lounge-text-muted hover:bg-lounge-card hover:text-lounge-text active:translate-y-[1px] transition-all cursor-pointer"
                 >
                   <LogOut className="h-3.5 w-3.5" /> Sign Out
-                </button>
+                </motion.button>
               </div>
             ) : (
-              <button
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => setIsAuthModalOpen(true)}
-                className="px-4 py-1.5 text-xs font-semibold text-[#050505] bg-golf rounded-lg hover:bg-[#8a6e3c] hover:shadow-lg active:translate-y-[1px] transition-all cursor-pointer"
+                className="px-4 py-1.5 text-xs font-semibold text-lounge-bg bg-golf rounded-lg hover:bg-golf-dark hover:shadow-lg active:translate-y-[1px] transition-all cursor-pointer"
               >
                 Sign In
-              </button>
+              </motion.button>
             )}
           </div>
 
-          {/* Quick Mobile burger tab */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden flex h-10 w-10 items-center justify-center rounded-lg border border-white/5 text-lounge-text-muted hover:bg-white/5 cursor-pointer"
-          >
-            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
+          {/* Quick Mobile burger tab / theme triggers */}
+          <div className="flex md:hidden items-center gap-2">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+              className="p-1.5 rounded-lg bg-lounge-card border border-border-subtle text-golf cursor-pointer"
+            >
+              {theme === "light" ? <Moon className="h-4.5 w-4.5" /> : <Sun className="h-4.5 w-4.5" />}
+            </motion.button>
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="flex h-9 w-9 items-center justify-center rounded-lg border border-border-subtle text-lounge-text-muted hover:bg-lounge-card cursor-pointer"
+            >
+              {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
+          </div>
 
         </div>
       </nav>
@@ -227,59 +271,63 @@ export default function App() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-[#050505] border-b border-white/5 overflow-hidden select-none"
+            className="md:hidden bg-lounge-sidebar border-b border-border-subtle overflow-hidden select-none"
           >
             <div className="px-6 py-5 space-y-4">
               <div className="flex flex-col gap-1.5">
                 {(["browse", "submit", "book", "about"] as const).map((tab) => (
-                  <button
+                  <motion.button
+                    whileTap={{ scale: 0.98 }}
                     key={tab}
                     onClick={() => handleTabChange(tab)}
-                    className={`w-full py-2.5 text-left text-sm font-semibold px-3 rounded-lg transition-colors ${
-                      activeTab === tab ? "bg-white/5 text-golf" : "text-lounge-text-muted hover:text-lounge-text"
+                    className={`w-full py-2.5 text-left text-sm font-semibold px-3 rounded-lg transition-colors cursor-pointer ${
+                      activeTab === tab ? "bg-lounge-card text-golf border border-border-subtle" : "text-lounge-text-muted hover:text-lounge-text"
                     }`}
                   >
                     {tab === "browse" && "Browse Stories"}
                     {tab === "submit" && "Submit a Story"}
                     {tab === "book" && "Read The Book"}
                     {tab === "about" && "Our Story beliefs"}
-                  </button>
+                  </motion.button>
                 ))}
 
                 {user && user.role === "admin" && (
-                  <button
+                  <motion.button
+                    whileTap={{ scale: 0.98 }}
                     onClick={() => handleTabChange("admin")}
-                    className={`w-full py-2.5 text-left text-sm font-semibold px-3 rounded-lg flex items-center gap-1.5 transition-colors ${
-                      activeTab === "admin" ? "bg-white/5 text-golf" : "text-lounge-text-muted hover:text-golf"
+                    className={`w-full py-2.5 text-left text-sm font-semibold px-3 rounded-lg flex items-center gap-1.5 transition-colors cursor-pointer ${
+                      activeTab === "admin" ? "bg-lounge-card text-golf border border-border-subtle" : "text-lounge-text-muted hover:text-golf"
                     }`}
                   >
                     <Sparkles className="h-4 w-4 text-golf" /> Admin Workspace
-                  </button>
+                  </motion.button>
                 )}
               </div>
 
-              <hr className="border-white/5" />
+              <hr className="border-border-subtle" />
 
               <div className="pt-2">
                 {user ? (
                   <div className="space-y-4">
-                    <div className="text-sm font-medium px-3 py-2 text-lounge-text bg-[#121212] rounded-lg border border-white/5">
+                    <div className="text-sm font-medium px-3 py-2 text-lounge-text bg-lounge-card rounded-lg border border-border-subtle">
                       Signed in as: @<strong>{user.username}</strong>
                     </div>
-                    <button
+                    <motion.button
+                      whileTap={{ scale: 0.98 }}
                       onClick={handleLogout}
-                      className="w-full py-2.5 rounded-lg border border-white/10 text-sm font-semibold text-lounge-text-muted hover:bg-white/5 flex items-center justify-center gap-1.5"
+                      className="w-full py-2.5 rounded-lg border border-border-medium text-sm font-semibold text-lounge-text-muted hover:bg-lounge-card flex items-center justify-center gap-1.5 cursor-pointer"
                     >
                       <LogOut className="h-4 w-4" /> Sign Out
-                    </button>
+                    </motion.button>
                   </div>
                 ) : (
-                  <button
+                  <motion.button
+                    whileTap={{ scale: 0.98 }}
                     onClick={() => { setMobileMenuOpen(false); setIsAuthModalOpen(true); }}
-                    className="w-full py-2.5 rounded-lg bg-golf hover:bg-[#8a6e3c] text-sm font-semibold text-[#050505] shadow-md text-center"
+                    className="w-full py-2.5 rounded-lg bg-golf hover:bg-golf-dark text-sm font-semibold text-lounge-bg shadow-md text-center cursor-pointer"
                   >
                     Sign In or Register
-                  </button>
+                  </motion.button>
                 )}
               </div>
             </div>
@@ -344,7 +392,7 @@ export default function App() {
       </main>
 
       {/* FOOTER METRICS ACCENTS */}
-      <footer className="w-full py-8 border-t border-white/5 select-none">
+      <footer className="w-full py-8 border-t border-border-subtle select-none">
         <div className="mx-auto max-w-7xl px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-lounge-text-muted font-sans">
           <span>Anthology Archive · Real Stories from Strangers</span>
           <div className="flex items-center gap-6">

@@ -95,7 +95,7 @@ export default function BookView({ chapters, loading, onNavigateToSubmit }: Book
           </motion.div>
 
           <div className="text-center mt-6 max-w-xs space-y-2">
-            <p className="font-serif text-sm font-medium italic text-[#e5e1d8]">
+            <p className="font-serif text-sm font-medium italic text-lounge-text">
               Departure Lounge Anthology — Vol I
             </p>
             <p className="font-sans text-lounge-text-muted text-xs leading-relaxed">
@@ -106,7 +106,7 @@ export default function BookView({ chapters, loading, onNavigateToSubmit }: Book
 
         {/* Dynamic Chapter table lists */}
         <section className="lg:col-span-7 space-y-8">
-          <div className="pb-4 border-b border-white/5 flex items-center justify-between">
+          <div className="pb-4 border-b border-border-subtle flex items-center justify-between">
             <div>
               <h2 className="font-serif text-2xl font-normal text-lounge-text tracking-tight flex items-center gap-2">
                 <ListOrdered className="h-5 w-5 text-golf" /> Catalog of Chapters
@@ -122,30 +122,32 @@ export default function BookView({ chapters, loading, onNavigateToSubmit }: Book
 
           {loading ? (
             <div className="py-20 text-center">
-              <span className="h-6 w-6 animate-spin rounded-full border-2 border-white/10 border-t-golf inline-block" />
+              <span className="h-6 w-6 animate-spin rounded-full border-2 border-border-subtle border-t-golf inline-block" />
               <p className="text-xs text-lounge-text-muted mt-2">Loading Table of Contents...</p>
             </div>
           ) : chapters.length === 0 ? (
-            <div className="text-center py-16 bg-white/2 rounded-xl border border-white/5 animate-fade-in">
+            <div className="text-center py-16 bg-lounge-card rounded-xl border border-border-subtle animate-fade-in">
               <BookOpen className="h-6 w-6 text-lounge-text-muted mx-auto mb-2" />
               <p className="font-serif text-base italic text-lounge-text/80">The pages are blank.</p>
               <p className="text-xs text-lounge-text-muted max-w-xs mx-auto mt-1 leading-relaxed">
                 No story has passed the stringent emotional threshold for Volume I compilation yet. Leave your memory and let AI analyze your writing.
               </p>
-              <button
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={onNavigateToSubmit}
-                className="mt-4 px-4 py-1.5 text-xs font-semibold text-black bg-golf rounded-lg hover:bg-golf-dark cursor-pointer transition-all uppercase tracking-wide"
+                className="mt-4 px-4 py-1.5 text-xs font-semibold text-lounge-bg bg-golf rounded-lg hover:bg-golf-dark cursor-pointer transition-all uppercase tracking-wide font-sans shadow-md"
               >
                 Write standard entry
-              </button>
+              </motion.button>
             </div>
           ) : (
-            <div className="divide-y divide-white/5">
+            <div className="divide-y divide-border-subtle">
               {chapters.map((ch, idx) => (
                 <div
                   key={ch.id}
                   onClick={() => setReadingStoryId(ch.storyId)}
-                  className="group py-4 flex items-baseline justify-between gap-6 cursor-pointer hover:bg-white/3 px-2 rounded-lg transition-colors"
+                  className="group py-4 flex items-baseline justify-between gap-6 cursor-pointer hover:bg-lounge-card px-2 rounded-lg transition-colors"
                 >
                   <div className="flex items-baseline gap-4 flex-1">
                     <span className="font-mono text-xs text-golf/30 font-bold w-6 select-none group-hover:text-golf transition-colors">
@@ -172,12 +174,14 @@ export default function BookView({ chapters, loading, onNavigateToSubmit }: Book
           )}
 
           <div className="text-center pt-6">
-            <button
+            <motion.button
+              whileHover={{ scale: 1.04, y: -2 }}
+              whileTap={{ scale: 0.97 }}
               onClick={onNavigateToSubmit}
-              className="px-5 py-2.5 text-xs font-bold uppercase tracking-widest text-[#050505] bg-gold rounded-lg hover:bg-golf-dark transition-colors cursor-pointer"
+              className="px-5 py-2.5 text-xs font-bold uppercase tracking-widest text-lounge-bg bg-golf rounded-lg hover:bg-golf-dark transition-colors cursor-pointer"
             >
               Submit your story for consideration
-            </button>
+            </motion.button>
           </div>
         </section>
       </div>
@@ -191,29 +195,31 @@ export default function BookView({ chapters, loading, onNavigateToSubmit }: Book
               animate={{ scale: 1, y: 0, opacity: 1 }}
               exit={{ scale: 0.95, y: 15, opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="relative w-full max-w-2xl max-h-[85vh] flex flex-col bg-[#0c0c0c] rounded-xl shadow-2xl border border-white/10 overflow-hidden"
+              className="relative w-full max-w-2xl max-h-[85vh] flex flex-col bg-lounge-bg rounded-xl shadow-2xl border border-border-medium overflow-hidden"
             >
-              <div className="flex items-center justify-between border-b border-white/5 bg-[#050505] p-5">
+              <div className="flex items-center justify-between border-b border-border-subtle bg-lounge-sidebar p-5">
                 <span className="inline-flex items-center gap-1 rounded-full bg-golf/15 text-golf px-2.5 py-0.5 text-[10px] font-semibold border border-golf/20">
                   <Sparkles className="h-2.5 w-2.5 text-golf animate-pulse" /> Curated Collection Chapter
                 </span>
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.1, rotate: 90 }}
+                  whileTap={{ scale: 0.9 }}
                   onClick={() => setReadingStoryId(null)}
-                  className="flex h-8 w-8 items-center justify-center rounded-full text-lounge-text-muted hover:bg-white/5 hover:text-lounge-text transition-colors cursor-pointer"
+                  className="flex h-8 w-8 items-center justify-center rounded-full text-lounge-text-muted hover:bg-lounge-card hover:text-lounge-text transition-all cursor-pointer"
                 >
                   <span className="text-xl">×</span>
-                </button>
+                </motion.button>
               </div>
 
               <div className="flex-1 overflow-y-auto p-8 md:p-10 scroll-smooth">
                 {modalLoading ? (
                   <div className="py-20 text-center">
-                    <span className="h-6 w-6 animate-spin rounded-full border-2 border-white/10 border-t-golf inline-block" />
+                    <span className="h-6 w-6 animate-spin rounded-full border-2 border-border-subtle border-t-golf inline-block" />
                     <p className="text-xs text-lounge-text-muted mt-2">Opening catalog pages...</p>
                   </div>
                 ) : selectedStory ? (
                   <div className="max-w-xl mx-auto space-y-6">
-                    <header className="border-b border-white/5 pb-6 text-center">
+                    <header className="border-b border-border-subtle pb-6 text-center">
                       <span className="font-script text-3xl text-golf block mb-1">
                         chapter leaf from the book
                       </span>
@@ -226,7 +232,7 @@ export default function BookView({ chapters, loading, onNavigateToSubmit }: Book
                       {selectedStory.body}
                     </p>
 
-                    <footer className="border-t border-white/5 pt-6 flex justify-between text-xs text-lounge-text-muted font-sans">
+                    <footer className="border-t border-border-subtle pt-6 flex justify-between text-xs text-lounge-text-muted font-sans">
                       <div>
                         <span>Anonymous Contributor</span>
                         <p className="text-[11px] text-lounge-text-muted/60 font-mono mt-0.5">Author Username: @{selectedStory.authorUsername}</p>
@@ -244,7 +250,7 @@ export default function BookView({ chapters, loading, onNavigateToSubmit }: Book
                 )}
               </div>
 
-              <div className="border-t border-white/5 bg-[#050505] p-4 text-center">
+              <div className="border-t border-border-subtle bg-lounge-sidebar p-4 text-center">
                 <p className="text-[11px] text-lounge-text-muted italic">
                   Compiled under Volume I - Departure Lounge Anthology © 2026
                 </p>

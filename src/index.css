@@ -1,18 +1,48 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Pinyon+Script&family=JetBrains+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
 
+:root {
+  --lounge-bg: #0a0a0a;
+  --lounge-sidebar: #050505;
+  --lounge-card: #121212;
+  --lounge-text: #e5e1d8;
+  --lounge-text-muted: #888780;
+  --golf: #c5a059;
+  --golf-dark: #8a6e3c;
+  --golf-light: #fefcf4;
+  --border-subtle: rgba(255, 255, 255, 0.05);
+  --border-medium: rgba(255, 255, 255, 0.1);
+}
+
+:root.light {
+  --lounge-bg: #faf9f6; /* Antique warm ivory paper background */
+  --lounge-sidebar: #f2ebd9; /* Warm cardboard sidebar */
+  --lounge-card: #ffffff; /* Clean white canvas card elements */
+  --lounge-text: #1c1a17; /* Noble dark coal text */
+  --lounge-text-muted: #6e6b62; /* Quiet sepia-gray typewriter text */
+  --golf: #b3883a; /* Legible antique gold-bronze */
+  --golf-dark: #7a581e;
+  --golf-light: #fffdf5;
+  --border-subtle: rgba(0, 0, 0, 0.06);
+  --border-medium: rgba(0, 0, 0, 0.15);
+}
+
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
   --font-script: "Pinyon Script", cursive;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 
-  --color-lounge-bg: #0a0a0a;
-  --color-lounge-sidebar: #050505;
-  --color-lounge-text: #e5e1d8;
-  --color-lounge-text-muted: #888780;
-  --color-golf: #c5a059;
-  --color-golf-dark: #8a6e3c;
+  --color-lounge-bg: var(--lounge-bg);
+  --color-lounge-sidebar: var(--lounge-sidebar);
+  --color-lounge-card: var(--lounge-card);
+  --color-lounge-text: var(--lounge-text);
+  --color-lounge-text-muted: var(--lounge-text-muted);
+  --color-golf: var(--golf);
+  --color-golf-dark: var(--golf-dark);
+  --color-golf-light: var(--golf-light);
+  --color-border-subtle: var(--border-subtle);
+  --color-border-medium: var(--border-medium);
 }
 
 /* Custom transitions and styles */
@@ -49,3 +79,4 @@
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(197, 160, 89, 0.4);
 }
+
