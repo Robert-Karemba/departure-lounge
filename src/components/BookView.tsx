@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Sparkles, BookOpen, ChevronRight, ListOrdered, Calendar, ArrowUpRight } from "lucide-react";
 import { Chapter, Story } from "../types";
 import { motion, AnimatePresence } from "motion/react";
+import { DEFAULT_STORIES } from "../data/staticDb";
 
 interface BookViewProps {
   chapters: Chapter[];
@@ -23,20 +24,26 @@ export default function BookView({ chapters, loading, onNavigateToSubmit }: Book
     const fetchStoryDetails = async () => {
       setModalLoading(true);
       try {
-        // Browse view has public stories, we can fetch all and lookup or can fetch directly from our list
         const response = await fetch("/api/stories");
         if (response.ok) {
           const publicStories: Story[] = await response.json();
           const found = publicStories.find((s) => s.id === readingStoryId);
           if (found) {
             setSelectedStory(found);
-          } else {
-            // It might be a pending/private story that got curated
-            setSelectedStory(null);
+            return;
           }
         }
+        throw new Error("API return error");
       } catch (e) {
-        console.error("Failed to load chapter story content", e);
+        console.warn("Failed to load chapter story content from API, falling back to static lookup...", e);
+        const localSubmitted = JSON.parse(localStorage.getItem("mock_submitted_stories") || "[]");
+        const merged = [...DEFAULT_STORIES, ...localSubmitted];
+        const found = merged.find((s) => s.id === readingStoryId);
+        if (found) {
+          setSelectedStory(found);
+        } else {
+          setSelectedStory(null);
+        }
       } finally {
         setModalLoading(false);
       }

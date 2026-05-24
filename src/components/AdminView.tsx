@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Sparkles, BarChart2, ShieldAlert, Heart, Calendar, Trash2, CheckCircle, AlertOctagon } from "lucide-react";
 import { AdminStats, Story } from "../types";
+import { DEFAULT_STORIES, DEFAULT_CHAPTERS } from "../data/staticDb";
 
 interface AdminViewProps {
   user: any;
@@ -21,11 +22,13 @@ export default function AdminView({ user, token }: AdminViewProps) {
     try {
       const headers: any = { "Authorization": `Bearer ${token}` };
 
-      // Load my submissions
+      // Try loading my submissions
       const mySubResponse = await fetch(`/api/stories/contributor/${user.id}`, { headers });
       if (mySubResponse.ok) {
         const data = await mySubResponse.json();
         setMySubmissions(data);
+      } else {
+        throw new Error("HTTP sub error");
       }
 
       // Load stats if admin
@@ -34,20 +37,50 @@ export default function AdminView({ user, token }: AdminViewProps) {
         if (statsResponse.ok) {
           const statsData = await statsResponse.json();
           setStats(statsData);
+        } else {
+          throw new Error("HTTP stats error");
         }
 
-        // Admins can see all stories in the system to moderate/review
-        // We will fetch all stories by pulling from an admin review endpoint or the public list plus pending list
-        // Let's call a query or fetch public stories, since we want them to show in a review board we also want are able to fetch all
-        // Let's fetch all public ones plus load them
         const allStoriesResponse = await fetch("/api/stories?category=all");
         if (allStoriesResponse.ok) {
           const allData = await allStoriesResponse.json();
           setAllSubmissions(allData);
+        } else {
+          throw new Error("HTTP all stories error");
         }
       }
     } catch (e) {
-      console.error("Failed to load admin logs", e);
+      console.warn("Failed to load admin logs from server, triggering local fallback dashboard...", e);
+      const localSubmitted = JSON.parse(localStorage.getItem("mock_submitted_stories") || "[]");
+      const staticOverrides = JSON.parse(localStorage.getItem("static_story_overrides") || "{}");
+      
+      const myLocal = localSubmitted.filter((s: Story) => s.authorId === user?.id);
+      setMySubmissions(myLocal);
+
+      if (isAdmin) {
+        // Apply overrides to static list
+        const updatedStatic = DEFAULT_STORIES.map(s => {
+          if (staticOverrides[s.id]) {
+            return { ...s, ...staticOverrides[s.id] };
+          }
+          return s;
+        });
+
+        const mergedAll = [...updatedStatic, ...localSubmitted];
+        setAllSubmissions(mergedAll);
+        
+        setStats({
+          totalStories: mergedAll.length,
+          pendingReview: mergedAll.filter((s: Story) => s.status === "pending").length,
+          approvedChapters: DEFAULT_CHAPTERS.length + mergedAll.filter((s: Story) => s.status === "approved" && s.ai_selected).length,
+          activeUsers: mergedAll.reduce((acc, current) => {
+            if (current.authorId && !acc.includes(current.authorId)) {
+              acc.push(current.authorId);
+            }
+            return acc;
+          }, ["admin-id-1234"]).length
+        });
+      }
     } finally {
       setLoading(false);
     }
@@ -72,14 +105,32 @@ export default function AdminView({ user, token }: AdminViewProps) {
       });
 
       if (response.ok) {
-        // Refresh
         await loadData();
       } else {
-        alert("Failed to update compilation status.");
+        throw new Error("Curation response error");
       }
     } catch (e) {
-      console.error(e);
-      alert("Error calling status API.");
+      console.warn("Failed to update status on server. Applying curation change locally.", e);
+      const localSubmitted = JSON.parse(localStorage.getItem("mock_submitted_stories") || "[]");
+      const foundIdx = localSubmitted.findIndex((s: Story) => s.id === storyId);
+      
+      if (foundIdx !== -1) {
+        localSubmitted[foundIdx].status = status;
+        if (aiSelected !== undefined) {
+          localSubmitted[foundIdx].ai_selected = aiSelected;
+        }
+        localStorage.setItem("mock_submitted_stories", JSON.stringify(localSubmitted));
+      } else {
+        const overrides = JSON.parse(localStorage.getItem("static_story_overrides") || "{}");
+        const existingOverride = overrides[storyId] || {};
+        overrides[storyId] = {
+          ...existingOverride,
+          status,
+          ...(aiSelected !== undefined ? { ai_selected: aiSelected } : {})
+        };
+        localStorage.setItem("static_story_overrides", JSON.stringify(overrides));
+      }
+      await loadData();
     } finally {
       setUpdatingId(null);
     }
